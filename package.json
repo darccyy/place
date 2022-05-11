@@ -1,0 +1,21 @@
+{
+  "name": "place",
+  "version": "1.1.0",
+  "description": "Clone of Reddit place",
+  "main": "server/server.js",
+  "engines": {
+    "node": "16.13.0"
+  },
+  "devDependencies": {
+    "concurrently": "^6.4.0"
+  },
+  "scripts": {
+    "build": "npm run install && cd client && npm run build",
+    "install": "cd client && npm ci && cd ../server && npm ci",
+    "start": "cd server && npm run start",
+    "dev": "concurrently \"cd client && npm run start\" \"cd server && npm run dev\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT"
+}

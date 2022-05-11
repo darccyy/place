@@ -1,0 +1,124 @@
+body {
+  background-color: #111;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.board {
+  display: flex;
+
+  .row {
+    .tile {
+      width: 15px;
+      aspect-ratio: 1/1;
+      // outline: 1px solid white;
+    }
+  }
+}
+
+.color {
+  display: flex;
+  margin-top: 10px;
+
+  .current {
+    height: 40px;
+    width: 40px;
+    margin-right: 10px;
+  }
+
+  .select {
+    display: flex;
+    height: 40px;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: flex-start;
+
+    .tile {
+      height: 20px;
+      width: 20px;
+    }
+  }
+}
+
+.grow {
+  &:hover {
+    transform: scale(1.2);
+    cursor: pointer;
+  }
+}
+
+.tile {
+  // Fallback
+  background: linear-gradient(
+    228deg,
+    rgba(255, 0, 255, 1) 35%,
+    rgba(0, 0, 0, 1) 100%
+  );
+
+  &[color="a"] {
+    background: white;
+  }
+  &[color="b"] {
+    background: #808080;
+  }
+  &[color="c"] {
+    background: #404040;
+  }
+  &[color="d"] {
+    background: black;
+  }
+  &[color="e"] {
+    background: red;
+  }
+  &[color="f"] {
+    background: #7f0000;
+  }
+  &[color="g"] {
+    background: #ff6a00;
+  }
+  &[color="h"] {
+    background: #7f3300;
+  }
+  &[color="i"] {
+    background: #ffd800;
+  }
+  &[color="j"] {
+    background: #7f6a00;
+  }
+  &[color="k"] {
+    background: lime;
+  }
+  &[color="l"] {
+    background: #267f00;
+  }
+  &[color="m"] {
+    background: #00ff90;
+  }
+  &[color="n"] {
+    background: #007f46;
+  }
+  &[color="o"] {
+    background: #0094ff;
+  }
+  &[color="p"] {
+    background: #004a7f;
+  }
+  &[color="q"] {
+    background: #0026ff;
+  }
+  &[color="r"] {
+    background: #00137f;
+  }
+  &[color="s"] {
+    background: #b200ff;
+  }
+  &[color="t"] {
+    background: #57007f;
+  }
+  &[color="u"] {
+    background: #ff00dc;
+  }
+  &[color="v"] {
+    background: #7f006e;
+  }
+}
