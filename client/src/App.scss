@@ -47,6 +47,23 @@ body {
   }
 }
 
+.countdown {
+  button {
+    display: inline;
+    margin-left: 5px;
+    padding: 0;
+    border: none;
+    font-size: 5px;
+    background-color: transparent;
+    color: white;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
 .grow {
   &:hover {
     transform: scale(1.2);

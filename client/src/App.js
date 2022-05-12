@@ -72,10 +72,6 @@ export default class App extends Component {
   }
 
   startCountdown() {
-    if (this.state.hack) {
-      this.setState({ countdown: 0 });
-      return;
-    }
     this.setState({ countdown: 5 }, async () => {
       while (this.state.countdown > 0) {
         await F.sleep(1000);
@@ -85,7 +81,7 @@ export default class App extends Component {
   }
 
   hack() {
-    this.setState({ ignoreCountdown: true, countdown: 0 });
+    this.setState({ ignoreCountdown: true, countdown: 1 });
   }
 
   render() {
@@ -135,8 +131,10 @@ export default class App extends Component {
         </div>
 
         <div className="countdown">
-          <h1>{this.state.countdown}</h1>
-          <button onClick={() => this.hack()}>Go hacker mode</button>
+          <h1>
+            {this.state.ignoreCountdown ? "0" : this.state.countdown}
+            <button onClick={() => this.hack()}>?</button>
+          </h1>
         </div>
       </div>
     );
