@@ -7,7 +7,13 @@ import "./App.scss";
 export default class App extends Component {
   columns = 30;
   rows = 20;
-  state = { board: "?".repeat(this.columns * this.rows), color: "e" };
+  state = {
+    board: "?".repeat(this.columns * this.rows),
+    color: F.randomChoice("abcdefghijklmnopqrstuv"),
+    countdown: 0,
+    ignoreCountdown: false,
+  };
+  mouseDown = false;
 
   componentDidMount() {
     this.socket = io
@@ -20,7 +26,6 @@ export default class App extends Component {
       })
       .on("didChange", board => {
         this.setState({ board });
-        console.log("Tile changed");
       });
 
     fetch("/api/get")
@@ -31,10 +36,24 @@ export default class App extends Component {
       .catch(err => {
         throw err;
       });
+
+    document.onmousedown = event => {
+      if (event.button === 0) {
+        this.mouseDown = true;
+      }
+    };
+    document.onmouseup = event => {
+      if (event.button === 0) {
+        this.mouseDown = false;
+      }
+    };
   }
 
   clickTile(x, y) {
-    console.log(x, y, this.state.color);
+    if (this.state.countdown > 0) {
+      return;
+    }
+
     var index = x + y * this.rows;
     this.setState({
       board:
@@ -46,6 +65,27 @@ export default class App extends Component {
     fetch(`/api/post?x=${x}&y=${y}&color=${this.state.color}`).catch(err => {
       throw err;
     });
+
+    if (!this.state.ignoreCountdown) {
+      this.startCountdown();
+    }
+  }
+
+  startCountdown() {
+    if (this.state.hack) {
+      this.setState({ countdown: 0 });
+      return;
+    }
+    this.setState({ countdown: 5 }, async () => {
+      while (this.state.countdown > 0) {
+        await F.sleep(1000);
+        this.setState({ countdown: this.state.countdown - 1 });
+      }
+    });
+  }
+
+  hack() {
+    this.setState({ ignoreCountdown: true, countdown: 0 });
   }
 
   render() {
@@ -53,7 +93,7 @@ export default class App extends Component {
       <div className="App">
         <h1>Place</h1>
 
-        <div className="board">
+        <div className={"board" + (this.state.countdown > 0 ? " no" : "")}>
           {F.splitAt(this.state.board, this.rows).map((row, y) => {
             return (
               <section key={y} className="row">
@@ -63,7 +103,12 @@ export default class App extends Component {
                       key={x}
                       className="tile grow"
                       color={color}
-                      onClick={() => this.clickTile(x, y, color)}
+                      onMouseDown={() => this.clickTile(x, y, color)}
+                      onMouseOver={() => {
+                        if (this.mouseDown) {
+                          this.clickTile(x, y, color);
+                        }
+                      }}
                     ></article>
                   );
                 })}
@@ -87,6 +132,11 @@ export default class App extends Component {
               );
             })}
           </section>
+        </div>
+
+        <div className="countdown">
+          <h1>{this.state.countdown}</h1>
+          <button onClick={() => this.hack()}>Go hacker mode</button>
         </div>
       </div>
     );
